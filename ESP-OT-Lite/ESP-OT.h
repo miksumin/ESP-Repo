@@ -1,6 +1,6 @@
 
 // ESP OpenTherm version
-#define VERSION		"1.0 (20210330)"
+#define VERSION		"1.0 (20210404)"
 #define BUILDNAME	"ESP OpenTherm"
 
 // Define your WiFi credentials
