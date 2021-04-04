@@ -140,7 +140,7 @@ bool WiFi_connect(const char* ssid = NULL, const char* pass = NULL) {
 // Web server config
 void Web_config() {
 	httpServer.on("/",[](){ httpServer.send(200, "text/html", "ESP OpenTherm WiFi controller"); });
-	httpServer.on("/restart",[](){ httpServer.send(200, "text/html", {ESP_restart = true;}); });
+	httpServer.on("/restart",[](){ httpServer.send(200, "text/html", "Restarting..."); ESP_restart = true; });
 	httpServer.onNotFound([](){
 		String message = "[HTTP] Page Not Found\r\n";
 			message += "URI: "+httpServer.uri()+"\r\n";

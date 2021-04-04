@@ -246,7 +246,7 @@ void ot_loop() {
 				break;
 		}
 		//
-		if (!result) {
+		if ((request > 0) && (!result)) {
 			DebugPrintln("OpenTherm send request error");
 		}
 		requestCounter++;
