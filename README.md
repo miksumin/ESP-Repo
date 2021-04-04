@@ -1,5 +1,5 @@
 
-Контроллерна основе ESP8266/ESP32 для управления работой котла с помощью адаптера (http://ihormelnyk.com/opentherm_adapter)
+Контроллер на основе ESP8266/ESP32 для управления работой котла с помощью адаптера (http://ihormelnyk.com/opentherm_adapter)
 или его самодельных аналогов и протокола Opentherm (http://ihormelnyk.com/opentherm_library).
 
 В папке \ESP-OT-Lite находится исходный код ядра прошивки, обеспечивающий подключение к WiFi сети и взаимодействие с котлом, 
