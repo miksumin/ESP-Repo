@@ -1,0 +1,14 @@
+  - platform: mqtt
+    name: "Boiler Flame"
+    state_topic: "ESP-DD5044/Opentherm/Flame"
+    value_template: "{{ value }}"
+    icon: mdi:fire
+
+  - platform: mqtt
+    name: "Boiler Heating status"
+    state_topic: "ESP-DD5044/Opentherm/Heating"
+    value_template: "{{ value }}"
+    icon: mdi:fire
+
+#ESP-XXXXXX/Opentherm/Flame		// статус горелки котла (ON/OFF)
+#ESP-XXXXXX/Opentherm/Heating	// статус контура CH котла (ON/OFF)

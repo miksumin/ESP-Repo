@@ -1,0 +1,45 @@
+  - platform: mqtt
+    unique_id: boiler_ch_mode_switch
+    name: "Boiler CH Mode"
+    state_topic: "ESP-DD5044/Opentherm/CHmode"
+    command_topic: "ESP-DD5044/Opentherm/CHsetMode"
+    payload_on: 1
+    payload_off: 0
+    state_on: "ON"
+    state_off: "OFF"
+    optimistic: false
+    qos: 0
+#    retain: true
+
+  - platform: mqtt
+    unique_id: boiler_dhw_mode_switch
+    name: "Boiler DHW Mode"
+    state_topic: "ESP-DD5044/Opentherm/DHWmode"
+    command_topic: "ESP-DD5044/Opentherm/DHWsetMode"
+    payload_on: 1
+    payload_off: 0
+    state_on: "ON"
+    state_off: "OFF"
+    optimistic: false
+    qos: 0
+#    retain: true
+
+  - platform: mqtt
+    unique_id: boiler_trmst_mode_switch
+    name: "Boiler Termostat Mode"
+    state_topic: "ESP-DD5044/Thermostat/Mode"
+    command_topic: "ESP-DD5044/Thermostat/SetMode"
+    payload_on: 1
+    payload_off: 0
+    state_on: "ON"
+    state_off: "OFF"
+    optimistic: false
+    qos: 0
+#    retain: true
+    
+#ESP-XXXXXX/Opentherm/CHmode		// текущий режим CH котла (ON/OFF)
+#ESP-XXXXXX/Opentherm/DHWmode	// текущий режим DHW котла (ON/OFF)
+#ESP-XXXXXX/Opentherm/CHsetMode	// установка режима CH котла (0/1)
+#ESP-XXXXXX/Opentherm/DHWsetMode	// установка режима DHW котла (0/1)
+#ESP-XXXXXX/Thermostat/Mode		// текущий режим работы термостата (ON/OFF)
+#ESP-XXXXXX/Thermostat/SetMode		// установка режима работы термостата (0/1)

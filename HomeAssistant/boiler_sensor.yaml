@@ -1,0 +1,84 @@
+  - platform: mqtt
+    name: "Boiler DHW Flow Rate"
+    state_topic: "ESP-DD5044/Opentherm/DHWFlowRate"
+    value_template: "{{ value }}"
+    unit_of_measurement: 'l/min'
+    icon: mdi:water
+    
+  - platform: mqtt
+    name: "Boiler CH Temp"
+    state_topic: "ESP-DD5044/Opentherm/TBoiler"
+    value_template: "{{ value }}"
+    unit_of_measurement: '°C'
+    icon: mdi:thermometer
+    
+  - platform: mqtt
+    name: "Boiler DHW Temp"
+    state_topic: "ESP-DD5044/Opentherm/TWater"
+    value_template: "{{ value }}"
+    unit_of_measurement: '°C'
+    icon: mdi:thermometer
+    
+  - platform: mqtt
+    name: "Boiler Flame Mod Level"
+    state_topic: "ESP-DD5044/Opentherm/ModLevel"
+    value_template: "{{ value }}"
+    unit_of_measurement: '%'
+    icon: mdi:fire
+    
+  - platform: mqtt
+    name: "Boiler Room Temp"
+    state_topic: "ESP-DD5044/Sensors/MIJIA/Temp"
+    value_template: "{{ value }}"
+    unit_of_measurement: '°C'
+    icon: mdi:thermometer
+    
+  - platform: mqtt
+    name: "Boiler BLE RSSI"
+    state_topic: "ESP-DD5044/Sensors/MIJIA/RSSI"
+    value_template: "{{ value }}"
+    unit_of_measurement: 'dBm'
+    icon: mdi:wifi
+    
+  - platform: mqtt
+    name: "Boiler CH SetPoint Temp"
+    state_topic: "ESP-DD5044/Opentherm/CHset"
+    value_template: "{{ value }}"
+    unit_of_measurement: '°C'
+    icon: mdi:thermometer
+    
+  - platform: mqtt
+    name: "Boiler DHW SetPoint Temp"
+    state_topic: "ESP-DD5044/Opentherm/DHWset"
+    value_template: "{{ value }}"
+    unit_of_measurement: '°C'
+    icon: mdi:thermometer
+    
+  - platform: mqtt
+    name: "Boiler Status"
+    state_topic: "ESP-DD5044/Opentherm/Status"
+    value_template: "{{ value }}"
+    unit_of_measurement: 'now'
+    icon: mdi:power
+    
+  - platform: mqtt
+    name: "Boiler Thermostat SetPoint Temp"
+    state_topic: "ESP-DD5044/Thermostat/Tset"
+    value_template: "{{ value }}"
+    unit_of_measurement: '°C'
+    icon: mdi:thermometer
+    
+  - platform: mqtt
+    name: "Boiler BLE Sensor status"
+    state_topic: "ESP-DD5044/Sensors/MIJIA/Status"
+    value_template: "{{ value }}"
+    icon: mdi:wifi
+    
+#ESP-XXXXXX/Opentherm/Status		// статус св¤зи и статус котла (OnLine/OffLine/Fault)
+#ESP-XXXXXX/Opentherm/TBoiler	// температура подачи CH котла (fXX.X)°C
+#ESP-XXXXXX/Opentherm/TWater		// температура подачи DHW котла (fXX.X)°C
+#ESP-XXXXXX/Opentherm/ModLevel	// уровень модул¤ции горелки котла (nXX)%
+#ESP-XXXXXX/Opentherm/CHset		// текущая установка температуры CH котла (nXX)°C
+#ESP-XXXXXX/Opentherm/DHWset		// текущая установка температуры DHW котла (nXX)°C
+#ESP-XXXXXX/Thermostat/Tset		// текущая установка температуры термостата (fXX.X)°C
+#ESP-XXXXXX/Opentherm/DHWFlowRate	// расход воды ГВС l/min
