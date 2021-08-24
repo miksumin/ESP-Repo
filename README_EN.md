@@ -25,5 +25,5 @@ It also can include the following features:
 - using GSM modem (like TTGO T-Call board) for SMS info and control your device,
 - interaction with other controllers in complex heating control system.
 
-ESP-OT firmware source code for all above mentioned features except of used third-party libraries developed and tested in real environment and garanted stable Fail-safe work.
-Communication wiith author by email esp-ot@mail.ru
+ESP-OT firmware source code for all above mentioned features developed and tested in real environment and garanted stable Fail-safe work.
+Communication with author by email esp-ot@mail.ru
