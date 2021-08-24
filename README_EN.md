@@ -23,7 +23,7 @@ It also can include the following features:
 - controlling other equipment (for example PUMP or MIXER) by switching ON/OFF as well as using Servo-control,
 - using OLED display for showing working parameters and controlling them by Touch Sensors (ESP32 feature),
 - using GSM modem (like TTGO T-Call board) for SMS info and control your device,
-- interaction with other controller in complex heating control system.
+- interaction with other controllers in complex heating control system.
 
 ESP-OT firmware source code for all above mentioned features except of used third-party libraries developed and tested in real environment and garanted stable Fail-safe work.
 Communication wiith author by email esp-ot@mail.ru
