@@ -24,4 +24,4 @@ It also can include the following features:
 - interaction with other controller in complex heating control system.
 
 ESP-OT firmware source code for all above mentioned features except of used third-party libraries developed and tested in real environment and garanted stable Fail-safe work.
-Communication by email esp-ot@mail.ru
+Communication wiith author by email esp-ot@mail.ru
