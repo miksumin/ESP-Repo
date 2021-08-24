@@ -12,7 +12,8 @@ If failed it starting WiFi AP mode (LED on), use password 12345678 for connect, 
 
 ## ESP-OT Full version
 ESP-OT firmware Full version will be made for your board using ChipID (MAC address). It using startup config file stored in ESP Flash memory for user flexible configuration of your device and
-it automaticaly saves all settings made during device usage, using MQTT for publish all working parameters and for controlling device usage and besides Serial you can use Telnet connection for debugging info.
+it automaticaly saves all settings made during device usage, using MQTT for publish all working parameters and for controlling device usage (for example from HomeAssistant), 
+and you can use Telnet connection (besides Serial) for debugging info.
 It also can include the following features:
 - reading a wide range of wired sensors connected to your device,
 - reading BLE sensors (like Xiaomi Mijia) in case of using ESP32 board,
