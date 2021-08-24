@@ -1,7 +1,7 @@
-#About this project
+##About this project
 ESP-OT firmware works on ESP8266/ESP32 boards and it allows you control your boiler by Opentherm protocol using Opentherm Adapter (http://ihormelnyk.com/opentherm_adapter) or it homemade analogue.
 
-#ESP-OT Free version
+##ESP-OT Free version
 You can download and try a full function ESP-OT firmware Free version (\ESP-OT-Free). It allows you connect to your WiFi network, 
 display and control the boiler using Web-interface, make a report of DataID list supported by your boiler, display and control Thermostat settings.
 The only restriction of Free version is automatic restart every 24 hours and settings you made are not saved. 
@@ -10,7 +10,7 @@ Opentherm adapter connection: adapter output (boiler output to controller) conne
 DS18B20 sensor connection - D3 pin (GPIO-00). During first start it trying to use the last successful WiFi connection credentials (LED flashing).
 If failed it starting WiFi AP mode (LED on), use password 12345678 for connect, open "Configure WiFi" page and make a connection to your WiFi network.
 
-#ESP-OT Full version
+##ESP-OT Full version
 ESP-OT firmware Full version will be made for your board using ChipID (MAC address). It using startup config file stored in ESP Flash memory for user flexible configuration of your device and
 it automaticaly saves all settings made during device usage, using MQTT for publish all working parameters and for controlling device usage and besides Serial you can use Telnet connection for debugging info.
 It also can include the following features:
