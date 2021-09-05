@@ -7,10 +7,12 @@ Further communication with boiler are made using only responsible DataID. This m
 You can download and try a full function ESP-OT firmware Free version (\ESP-OT-Free). It allows you connect to your WiFi network, 
 display and control the boiler using Web-interface, make a report of DataID list supported by your boiler, display and control Thermostat settings.
 The only restriction of Free version is automatic restart every 24 hours and settings you made are not saved. 
-Current version of ESP-OT Free firmware is build for Wemos D1 mini (NodeMCU) board but it also can be build for any other ESP8266/ESP32 board.
-Opentherm adapter connection: adapter output (boiler output to controller) connect to D2 pin (GPIO-04), adapter input (controller output to boiler) connect to D1 pin (GPIO-05).
-DS18B20 sensor connection - D3 pin (GPIO-00). During first start it trying to use the last successful WiFi connection credentials (LED flashing).
-If failed it starting WiFi AP mode (LED on), use password 12345678 for connect, open "Configure WiFi" page and make a connection to your WiFi network.
+
+ESP-OT-Free.D1-mini.bin - build for Wemos D1 mini (NodeMCU). Opentherm adapter connection: adapter output (boiler output to controller) connect to D2 pin (GPIO-04), adapter input (controller output to boiler) connect to D1 pin (GPIO-05). DS18B20 sensor connection - D3 pin (GPIO-00).
+ESP-OT-Free.D1-mini32.bin - build for ESP32 D1 mini board. Opentherm adapter connection: adapter output (boiler output to controller) connect to GPIO-21 pin, adapter input (controller output to boiler) connect GPIO-22 pin. DS18B20 sensor connection - GPIO-18 pin.
+
+During first start it will try to use the last successful WiFi connection credentials (LED flashing).
+If failed it will start in WiFi AP mode (LED on), use password 12345678 for connect, open "Configure WiFi" page and make a connection to your WiFi network.
 
 ## ESP-OT Full version
 ESP-OT firmware Full version will be made for your board using ChipID (MAC address). It using startup config file stored in ESP Flash memory for user flexible configuration of your device and
