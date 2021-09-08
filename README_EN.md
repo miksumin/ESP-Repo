@@ -8,8 +8,8 @@ You can download and try a full function ESP-OT firmware Free version (\ESP-OT-F
 display and control the boiler using Web-interface, make a report of DataID list supported by your boiler, display and control Thermostat settings.
 The only restriction of Free version is automatic restart every 24 hours and settings you made are not saved. 
 
-ESP-OT-Free.D1-mini.bin - build for Wemos D1 mini (NodeMCU). Opentherm adapter connection: adapter output (boiler output to controller) connect to D2 pin (GPIO-04), adapter input (controller output to boiler) connect to D1 pin (GPIO-05). DS18B20 sensor connection - D3 pin (GPIO-00).
-ESP-OT-Free.D1-mini32.bin - build for ESP32 D1 mini board. Opentherm adapter connection: adapter output (boiler output to controller) connect to GPIO-21 pin, adapter input (controller output to boiler) connect GPIO-22 pin. DS18B20 sensor connection - GPIO-18 pin.
+ESP-OT-Free.D1-mini.bin - build for Wemos D1 mini (NodeMCU). Opentherm adapter connection: adapter output (boiler output to controller) connect to D2 pin (GPIO-04), adapter input (controller output to boiler) connect to D1 pin (GPIO-05). DS18B20 sensor connection - D5 pin (GPIO-14). Sensor read interval 30 sec.
+ESP-OT-Free.D1-mini32.bin - build for ESP32 D1 mini board. Opentherm adapter connection: adapter output (boiler output to controller) connect to GPIO-21 pin, adapter input (controller output to boiler) connect GPIO-22 pin. DS18B20 sensor connection - GPIO-18 pin. Sensor read interval 30 sec.
 
 During first start it will try to use the last successful WiFi connection credentials (LED flashing).
 If failed it will start in WiFi AP mode (LED on), use password 12345678 for connect, open "Configure WiFi" page and make a connection to your WiFi network.
