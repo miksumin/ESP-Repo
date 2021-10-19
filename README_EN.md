@@ -1,7 +1,10 @@
 ## About this project
 ESP-OT firmware works on ESP8266/ESP32 boards and it allows you control your boiler by Opentherm protocol using Opentherm Adapter (http://ihormelnyk.com/opentherm_adapter) or it homemade analogue.
-It uses a flexible algoritm to communicate with boiler. After startup it making a full scan of all DataID's described in Opentherm protocol and marking each one for getting boiler response.
-Further communication with boiler are made using only responsible DataID. This make it possible to adjust a composition of requests during communication depending on boiler model.
+It uses a flexible algoritm to communicate with boiler. After startup it making a full scan of all DataID's described in Opentherm protocol and marking each one for getting boiler response. Further communication with boiler are made using only responsible DataID. This make it possible to adjust a composition of requests during communication depending on boiler model.
+
+## Code examples
+Folder \ESP-OT-Lite contains the core code with an example of standard algorithm to to communicate with boiler using sequential requests of necessary DataIDs.
+Folder \ESP-OT-Lite-v2 contains the core code with an example of "smart" flexible algoritm to communicate with boiler using only responsible DataIDs. Boiler response description are made only for DataIDs supported by my Buderus Logamax U072 and can be added by yourself if needed. Yuo can also make a report of DataIDs supported by your boiler using this code example or using "OT report" link in ESP-OT Free version firmware.
 
 ## ESP-OT Free version
 You can download and try a full function ESP-OT firmware Free version (\ESP-OT-Free). It allows you connect to your WiFi network, 
