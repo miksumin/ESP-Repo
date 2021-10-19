@@ -27,5 +27,8 @@ It also can include the following features:
 - using GSM modem (like TTGO T-Call board) for SMS info and control your device,
 - interaction with other controllers in complex heating control system.
 
+## Using BLE sensors
+There is two modes of using BLE sensors: connection mode (1) and advertizing mode (2). In mode (1) bluetooth connection established to the sensor so can use only one sensor but receiving the BLE packages in this mode are not interrupting the main cycle of your device. In mode (2) you can use a several sensors but receiving the BLE packages are carried out by scanning broadcats so this mode have to interrupt the main cycle of your device.
+
 ESP-OT firmware source code for all above mentioned features developed and tested in real environment and garanted stable Fail-safe work.
 Communication with author by email esp-ot@mail.ru
