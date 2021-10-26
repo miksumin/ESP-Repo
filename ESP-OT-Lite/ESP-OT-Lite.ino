@@ -1,8 +1,8 @@
 
 /*
 ESP8266/ESP32 OpenTherm WiFi Controller
-By: Mikhail Sumin
-Date: March 30, 2021
+Author: Mikhail Sumin
+Date: October 25, 2021
 */
 
 #include <Arduino.h>
@@ -18,9 +18,11 @@ Date: March 30, 2021
 	HTTPUpdateServer httpUpdater;
 #endif
 
-#include <OpenTherm.h>			// https://github.com/ihormelnyk/opentherm_library
-
 #include "ESP-OT.h"
+
+#include "OT-core.h"
+
+#include "WebPages.h"
 
 // WiFi variables
 char HOSTNAME[16];
@@ -34,29 +36,27 @@ IPAddress ap_netmask(255,255,255,0);
 
 bool ESP_restart = false;
 
-String getChipType() {
-#if defined(ESP8266)
-	return "ESP8266";
-#elif defined(ESP32)
-	return "ESP32";
-#endif
-}
-
-uint32_t getChipID() {
-	char ChipID[6];
-#if defined(ESP8266)
-	uint32_t intChipID = ESP.getChipId();
-#elif defined(ESP32)
-	uint32_t intChipID = ESP.getEfuseMac() & 0xFFFFFF;
-#endif
-	return intChipID;
-}
-
 void statusLed(bool state) {
 #ifdef LED_BUILTIN
 	pinMode(LED_BUILTIN, OUTPUT);
 	digitalWrite(LED_BUILTIN, !state);
 #endif
+}
+
+void statusLed_flash() {
+	// flash status LED
+	statusLed(true);
+	delay(10);
+	statusLed(false);
+}
+
+String strStatus(int8_t status) {
+	switch (status) {
+		case -1: return "N/A";
+		case 0: return "OFF";
+		case 1: return "ON";
+		default: return "";
+	}
 }
 
 String strUptime() {
@@ -84,7 +84,7 @@ String WiFi_getHostname() {
 }
 
 void WiFi_setHostname() {
-	sprintf(HOSTNAME, "ESP-%06X", getChipID());
+	sprintf(HOSTNAME, BUILD_NAME);
 #if defined(ESP8266)
 	WiFi.hostname(HOSTNAME);
 #elif defined(ESP32)
@@ -130,16 +130,125 @@ bool WiFi_connect(const char* ssid = NULL, const char* pass = NULL) {
 		}
 		DebugPrintln();
 		DebugPrintln("WiFi connection failed!");
-		if (String(DEFAULT_SSID) != "")
+		if ((String(DEFAULT_SSID) != "") && (ssid != DEFAULT_SSID))
 			if (WiFi_connect(DEFAULT_SSID,DEFAULT_PASS))
 				return true;
 		return false;
 	}
 }
 
+// Root page response
+void handleRoot() {
+	//
+	int8_t refresh = -1;
+	//
+	if ((httpServer.args() > 0 )) {
+		//
+		#ifdef OT_POWER_PIN
+			if (httpServer.hasArg("ot_power")) {
+				ot_power = (httpServer.arg("ot_power") == "ON")? true:false;
+				// Boiler power control
+				pinMode(OT_POWER_PIN, OUTPUT);
+				digitalWrite(OT_POWER_PIN, !value);
+			}
+		#endif
+		//
+		if (httpServer.hasArg("boiler_mode")) {
+			boiler_mode = (httpServer.arg("boiler_mode") == "ON")? true:false;
+		}
+		if (httpServer.hasArg("water_mode")) {
+			water_mode = (httpServer.arg("water_mode") == "ON")? true:false;
+		}
+		//
+		if (httpServer.hasArg("boiler_sp")) {
+			ot_command("boiler_sp", httpServer.arg("boiler_sp").toInt());
+		}
+		if (httpServer.hasArg("water_sp")) {
+			ot_command("water_sp", httpServer.arg("water_sp").toInt());
+		}
+		refresh = 0;
+	}
+
+		//
+		String strPage = rootPage;
+		if (strPage.indexOf(String("{rftime}")) > 0)
+			strPage.replace(String("{rftime}"), String(refresh));
+		//
+		while (strPage.indexOf(String("{bsp}")) > 0)
+			strPage.replace(String("{bsp}"), String(boiler_setpoint));
+		if (strPage.indexOf(String("{bsp_min}")) > 0)
+			strPage.replace(String("{bsp_min}"), String(boiler_sp_min));
+		if (strPage.indexOf(String("{bsp_max}")) > 0)
+			strPage.replace(String("{bsp_max}"), String(boiler_sp_max));
+		//
+		while (strPage.indexOf(String("{wsp}")) > 0)
+			strPage.replace(String("{wsp}"), String(water_setpoint));
+		if (strPage.indexOf(String("{wsp_min}")) > 0)
+			strPage.replace(String("{wsp_min}"), String(water_sp_min));
+		if (strPage.indexOf(String("{wsp_max}")) > 0)
+			strPage.replace(String("{wsp_max}"), String(water_sp_max));
+		//
+		httpServer.send(200, "text/html", strPage);
+		statusLed_flash();
+
+}
+
+// Status response
+String handleStatus() {
+	//
+	String strJSON = "{";
+	//
+	strJSON += "\"build_name\":\"" + String(BUILD_NAME) + "\",";
+	strJSON += "\"build_ver\":\"" + String(BUILD_VER) + "\",";
+	strJSON += "\"build_date\":\"" + String(BUILD_DATE) + "\",";
+	//
+	strJSON += "\"ot_inpin\":" + String(OT_INPIN) + ",";
+	strJSON += "\"ot_outpin\":" + String(OT_OUTPIN) + ",";
+	//
+	#ifdef OT_POWER_PIN
+		strJSON += "\"ot_power\":\"" + String(ot_power? "ON":"OFF") + "\",";
+	#endif
+	strJSON += "\"ot_status\":\"" + String(ot_status) + "\",";
+	//
+	strJSON += "\"flame_status\":\"" + String(strStatus(flame_status)) + "\",";
+	strJSON += "\"ot_modLevel\":" + String(ot_modLevel) + ",";
+	//
+	strJSON += "\"boiler_temp\":\"" + String(boiler_temp,1) + "\",";
+	strJSON += "\"boiler_setpoint\":" + String(boiler_setpoint) + ",";
+	strJSON += "\"boiler_sp_min\":" + String(boiler_sp_min) + ",";
+	strJSON += "\"boiler_sp_max\":" + String(boiler_sp_max) + ",";
+	//
+	strJSON += "\"water_temp\":\"" + String(water_temp,1) + "\",";
+	strJSON += "\"water_setpoint\":" + String(water_setpoint) + ",";
+	strJSON += "\"water_sp_min\":" + String(water_sp_min) + ",";
+	strJSON += "\"water_sp_max\":" + String(water_sp_max) + ",";
+	//
+	strJSON += "\"boiler_status\":\"" + String(strStatus(boiler_status)) + "\",";
+	strJSON += "\"boiler_mode\":\"" + String(boiler_mode? "ON":"OFF") + "\",";
+	//
+	strJSON += "\"water_status\":\"" + String(strStatus(water_status)) + "\",";
+	strJSON += "\"water_mode\":\"" + String(water_mode? "ON":"OFF") + "\",";
+	//
+	strJSON += "\"uptime\":\"" + String(strUptime()) + "\"";
+	//
+	strJSON += "}";
+	
+	return strJSON;
+	
+	// send JSON response
+	//httpServer.send(200, "text/json", strJSON);
+	
+}
+
 // Web server config
-void Web_config() {
-	httpServer.on("/",[](){ httpServer.send(200, "text/html", "ESP OpenTherm WiFi controller"); });
+void httpConfig() {
+	//httpServer.on("/",[](){ httpServer.send(200, "text/html", rootPage); });
+	httpServer.on("/", handleRoot);
+	//httpServer.on("/status", handleStatus);
+	httpServer.on("/status",[](){
+		httpServer.send(200, "text/json", handleStatus());
+		statusLed_flash();
+	});
 	httpServer.on("/restart",[](){ httpServer.send(200, "text/html", "Restarting..."); ESP_restart = true; });
 	httpServer.onNotFound([](){
 		String message = "[HTTP] Page Not Found\r\n";
@@ -159,17 +268,21 @@ void Web_config() {
 //
 void setup() {
 	
-    DebugBegin(115200);
+	DebugBegin(115200);
 	delay(100);
 	
 	DebugPrintln("Starting...");
-	DebugPrintln("ESP-OT-Lite version "+String(VERSION));
+	DebugPrintln(String(BUILD_NAME)+" ver: "+String(BUILD_VER)+"("+String(BUILD_DATE)+")");
 	
 	// starting WiFi connection
 	if (WiFi_connect()) {
 	
+		#ifdef TELNET_DEBUG
+			TelnetStart();
+		#endif
+	
 		// HTTP server config and start
-		Web_config();
+		httpConfig();
 		httpServer.begin();
 		DebugPrintln("HTTP server configured and started");
 		
@@ -180,6 +293,12 @@ void setup() {
 		// OpenTherm init
 		ot_init();
 		
+		// Boiler power control
+		#ifdef OT_POWER_PIN
+			control_setGPIO(OT_POWER_PIN, !ot_power);
+		#endif
+		
+		//
 		DebugPrintln("Setup finished, starting main loop...");
 	}
 	else {
@@ -192,7 +311,7 @@ void setup() {
 		DebugPrintln(res? "Ready" : "Failed!");		
 		DebugPrintln("WiFi AP IP address: "+WiFi.softAPIP().toString());
 		//
-		Web_config();
+		httpConfig();
 		httpServer.begin();
 		DebugPrintln("HTTP server configured and started");
 		DebugPrintln("Waiting for client connection...");
