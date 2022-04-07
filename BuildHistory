@@ -1,3 +1,4 @@
 ESP-OT ver: 2.0(20220405):
 - BLE module code refactoring, BLE scan mode now working in non-blocking mode
 - Added support for Mi Flower Care BLE sensor using connection mode with secure handshake
+-
