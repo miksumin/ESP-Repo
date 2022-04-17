@@ -14,4 +14,4 @@
 Демо-версия не сохраняет настройки термостатов и управляемых выходов и автоматически перезагружается каждые 24 часа. 
 Ниже представлены скриншоты основных веб-страниц прошивки.
 
-![Screenshot_20220417-131048](https://user-images.githubusercontent.com/63466871/163712880-b1b57d1f-2932-4765-bcea-e7551df9323b.png)![Screenshot_20220417-131127](https://user-images.githubusercontent.com/63466871/163712886-549cad09-6998-48ef-a681-2a725303b1d4.png)![Screenshot_20220417-131151](https://user-images.githubusercontent.com/63466871/163712888-702bf95a-a60f-4173-9066-f4c1c14d2c77.png)
+![Screenshots](https://user-images.githubusercontent.com/63466871/163713363-86ab227c-85dd-4365-9b48-1dea85d5384b.JPG)
