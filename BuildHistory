@@ -1,4 +1,18 @@
-ESP-OT ver: 2.0(20220405):
-- BLE module code refactoring, BLE scan mode now working in non-blocking mode
-- Added support for Mi Flower Care BLE sensor using connection mode with secure handshake
--
+ESP-2.0.3(20220906):
+Bugfixes for use with ESP8266 core version 3.0
+Update sensors processing algoritm to minimize publishing history - publish only changes
+
+ESP-2.0.2(20220820):
+A few bugfixes (including publishing values)
+I2C & Wire sensors correct processing 
+
+ESP-2.0.2(20220415):
+Added support for a few BLE sensors in scan mode (mode 1)
+Added support for a few Thermostats
+
+ESP-2.0.1(20220410):
+BLE module code refactoring, BLE scan mode now working in non-blocking mode
+Added support for Mi Flower care BLE sensor using connection mode with secure handshake
+
+ESP-2.0(20220320):
+WiFi connection bugfixes, WiFi connect to different network is now working correctly
