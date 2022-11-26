@@ -128,10 +128,6 @@ function handleServerResponse() {
 <td>Boiler DHW status [mode]:</td>
 <td><span id='water_status'>...</span> [<a id='water_mode_href' href='/?water_mode=ON' title='Switch ON'><span id='water_mode'>OFF</span></a>]</td>
 </tr>
-<tr>
-<td>Boiler power control:</td>
-<td>[<a id='ot_power_href' href='/?ot_power=ON' title='Switch ON'><span id='ot_power'>OFF</span></a>]</td>
-</tr>
 </table>
 </div>
 

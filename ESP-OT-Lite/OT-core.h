@@ -30,7 +30,7 @@ bool water_mode = false;		// Hot Water mode (if present)
 uint16_t fault_code = 0;		// Fault code (in case of fault status)
 int8_t fault_status = -1;		// Fault status
 int8_t boiler_status = -1;		// Central Heating status
-int8_t water_status = -1;		// Hot Water status	(if presenr)
+int8_t water_status = -1;		// Hot Water status	(if present)
 int8_t flame_status = -1;		// Flame Status
 byte ot_modLevel = 0;			// Modulation Level
 
@@ -246,6 +246,7 @@ void responseCallback(unsigned long response, OpenThermResponseStatus responseSt
 //
 void ot_init() {
 	ot.begin(handleInterrupt, responseCallback);
+	DebugPrintln("Opentherm use pins: "+String(OT_INPIN)+", "+String(OT_OUTPIN);
 	DebugPrintln("OpenTherm initialized");
 	strcpy(ot_status, "N/A");
 }

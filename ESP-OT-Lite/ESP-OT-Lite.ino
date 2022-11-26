@@ -2,8 +2,24 @@
 /*
 ESP8266/ESP32 OpenTherm WiFi Controller
 Author: Mikhail Sumin
-Date: October 25, 2021
+Updated: November 25, 2022
 */
+
+// ESP-OT-Lite version
+#define BUILD_NAME	"ESP-OT-Lite"
+#define BUILD_VER	"1.1"
+#define BUILD_DATE	"20221125"
+
+// Define your WiFi credentials
+#define DEFAULT_SSID	"Your_WiFi_SSID"
+#define DEFAULT_PASS	"Your_WiFi_PASS"
+
+// OpenTherm Adapter connection
+#define OT_INPIN	5	// D1 WemosD1/NodeMCU
+#define OT_OUTPIN	4	// D2 WemosD1/NodeMCU
+
+// Buildin LED for your board
+#define LED_BUILTIN	2	// WemosD1/NodeMCU
 
 #include <Arduino.h>
 #if defined(ESP8266)
@@ -18,14 +34,20 @@ Date: October 25, 2021
 	HTTPUpdateServer httpUpdater;
 #endif
 
-#include "ESP-OT.h"
+char HOSTNAME[16];
+
+#include "Debug.h"
+
+#include "Ethernet.h"
 
 #include "OT-core.h"
 
 #include "WebPages.h"
 
+int8_t WIFI_MODE = WIFI_STA;
+bool wifi_connected = false;
+
 // WiFi variables
-char HOSTNAME[16];
 byte wifi_connect_timeout = 15;
 unsigned long wifi_lastCheck;
 
@@ -84,12 +106,11 @@ String WiFi_getHostname() {
 }
 
 void WiFi_setHostname() {
-	sprintf(HOSTNAME, BUILD_NAME);
-#if defined(ESP8266)
-	WiFi.hostname(HOSTNAME);
-#elif defined(ESP32)
-	WiFi.setHostname(HOSTNAME);
-#endif
+	#if defined(ESP8266)
+		WiFi.hostname(HOSTNAME);
+	#elif defined(ESP32)
+		WiFi.setHostname(HOSTNAME);
+	#endif
 }
 
 // WiFi connection
@@ -241,7 +262,7 @@ String handleStatus() {
 }
 
 // Web server config
-void httpConfig() {
+void http_Config() {
 	//httpServer.on("/",[](){ httpServer.send(200, "text/html", rootPage); });
 	httpServer.on("/", handleRoot);
 	//httpServer.on("/status", handleStatus);
@@ -274,34 +295,34 @@ void setup() {
 	DebugPrintln("Starting...");
 	DebugPrintln(String(BUILD_NAME)+" ver: "+String(BUILD_VER)+"("+String(BUILD_DATE)+")");
 	
-	// starting WiFi connection
-	if (WiFi_connect()) {
+	sprintf(HOSTNAME, BUILD_NAME);
 	
-		#ifdef TELNET_DEBUG
-			TelnetStart();
-		#endif
-	
-		// HTTP server config and start
-		httpConfig();
-		httpServer.begin();
-		DebugPrintln("HTTP server configured and started");
-		
-		// HTTP updater start
-		httpUpdater.setup(&httpServer);
-		DebugPrintln("HTTP updates ready on http://"+WiFi.localIP().toString()+"/update");
-		
-		// OpenTherm init
-		ot_init();
-		
-		// Boiler power control
-		#ifdef OT_POWER_PIN
-			control_setGPIO(OT_POWER_PIN, !ot_power);
-		#endif
-		
-		//
-		DebugPrintln("Setup finished, starting main loop...");
+	// Starting Ethernet
+	if (eth_enabled) {
+		if (Eth_Begin()) {
+			WIFI_MODE = WIFI_AP;
+		}
+		else {
+			DebugPrintln(F("Ethernet not connected"));
+			WIFI_MODE = WIFI_STA;
+		}
 	}
-	else {
+	
+	// Starting WiFi network
+	if (WIFI_MODE == WIFI_STA) {
+		// starting WiFi in STA mode
+		if (WiFi_connect()) {
+			//
+			wifi_connected = true;
+		}
+		else {
+			//
+			wifi_connected = false;
+			WIFI_MODE = WIFI_AP;
+		}
+	}
+	//
+	if (WIFI_MODE == WIFI_AP) {
 		// starting WiFi in AP mode
 		DebugPrint("WiFi starting in AP mode... ");
 		WiFi.mode(WIFI_AP);
@@ -310,35 +331,43 @@ void setup() {
 		bool res = WiFi.softAP(HOSTNAME, "12345678", 1, 0, 1);
 		DebugPrintln(res? "Ready" : "Failed!");		
 		DebugPrintln("WiFi AP IP address: "+WiFi.softAPIP().toString());
-		//
-		httpConfig();
-		httpServer.begin();
-		DebugPrintln("HTTP server configured and started");
-		DebugPrintln("Waiting for client connection...");
-		//
-		while (1) {
-			httpServer.handleClient();
-			delay(1);
-		}
 	}
+	
+	// HTTP server & HTTP updater config and start
+	http_Config();
+	httpUpdater.setup(&httpServer);
+	httpServer.begin();
+	DebugPrintln("HTTP server configured and started");
+	
+	// HTTP updater info
+	if (eth_connected)
+		DebugPrintln("HTTP updates on http://"+ETH.localIP().toString()+"/update");
+	//
+	if (WIFI_MODE == WIFI_STA)
+		DebugPrintln("HTTP updates on http://"+WiFi.localIP().toString()+"/update");
+	if (WIFI_MODE == WIFI_AP)
+		DebugPrintln("HTTP updates on http://"+WiFi.softAPIP().toString()+"/update");
+	
+	// OpenTherm init
+	ot_init();
+	
+	// Finishing setup
+	DebugPrintln("Setup finished, starting main loop...");
+	
 }
 
 //
 void loop() {
 	
-	// check if ESP Restart is needed
-	if (ESP_restart) {
-		DebugPrintln("Restarting...");
-		delay(1000);
-		ESP.restart();
-	}
-	
-	// check WiFi status
-	if (WiFi.status() != WL_CONNECTED) {
-		if (millis() - wifi_lastCheck > wifi_connect_timeout*1000) {
-			// WiFi try to reconnect
-			WiFi_connect();
-			wifi_lastCheck = millis();
+	//
+	if (WIFI_MODE == WIFI_STA) {
+		// check WiFi status
+		if (WiFi.status() != WL_CONNECTED) {
+			if (millis() - wifi_lastCheck > wifi_connect_timeout*1000) {
+				// WiFi try to reconnect
+				WiFi_connect();
+				wifi_lastCheck = millis();
+			}
 		}
 	}
 		
@@ -348,6 +377,13 @@ void loop() {
 	// HTTP server handle client requests
 	httpServer.handleClient();
 	delay(1);
+	
+	// check if ESP Restart is needed
+	if (ESP_restart) {
+		DebugPrintln("Restarting...");
+		delay(1000);
+		ESP.restart();
+	}
 
 }
 
