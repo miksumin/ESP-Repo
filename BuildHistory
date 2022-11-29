@@ -1,3 +1,18 @@
+ESP-2.1.0(20221125):
+Added Ethernet support for WT32-ETH01 board
+Main Code fully refactored
+
+ESP-2.0.6(20221120):
+Added chart functionality
+Update Thermostat to use with Boiler or not
+
+ESP-2.0.5(20221105):
+Update boiler CH & DHW setpoints and thermostat PID calculation algorimt to use the decimal point
+
+ESP-2.0.4(20221025):
+Bugfix for Wire Sensors functionality
+ESP32 core updated to 1.0.6
+
 ESP-2.0.3(20220906):
 Bugfixes for use with ESP8266 core version 3.0
 Update sensors processing algoritm to minimize publishing history - publish only changes
