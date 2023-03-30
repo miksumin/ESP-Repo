@@ -1,5 +1,5 @@
 ## ESP-Opentherm
-ESP-Opentherm это проект контроллера на основе ESP8266/ESP32 для управления работой котла с помощью адаптера (https://github.com/miksumin/ESP-Repo/wiki/Адаптер-Opentherm) или его самодельных аналогов и протокола Opentherm (http://ihormelnyk.com/opentherm_library). 
+ESP-Opentherm это проект контроллера на основе ESP8266/ESP32 для управления работой котла с помощью адаптера (https://github.com/miksumin/ESP-Repo/wiki/Адаптер-Opentherm) или его самодельных аналогов и протокола Opentherm. 
 
 Рабочая версия прошивки использует гибкий или "обучаемый" алгоритм взаимодействия с котлом.
 
