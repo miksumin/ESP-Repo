@@ -1,3 +1,29 @@
+ESP-2.1.4(20230627):
+1. Добавлена возможность использования веб-авторизации.
+Для этого использовать команду "web_auth 1". Логин по умолчанию "admin", пароль по умолчанию "esp32".
+Для указания своего логина/пароля использовать команды "web_user XXXXX" и "web_pass XXXXX" соответственно.
+2. Добавлена возможность указания имени домена MQTT-брокера вместо IP-адреса. Для этого использовать команду "mqtt_domain" вместо "mqtt_server".
+3. Добавлена возможность полного отключения работы веб-интерфейса. Для этого использовать команду "http_enable 0".
+Также для корневой страницы можно указать другую или полностью ее отключить. Для этого использовать команду "root_page", в которой указать имя страницы (например "opentherm") или значение "none".
+4. Добавлено определение котла Bosch GAZ 6000
+
+ESP-2.1.3(20230331):
+Modifired for use with ArduinoJson v6
+Added support for Tasmota MQTT JSON format while reading MQTT sensors
+Added Flame stop when boiler_temp+boiler_delta > pid_set_value
+Modified OT Callback function algoritm for INVALID response and use original Opentherm library
+WiFi connect/disconnect algoritm fully refactored using WiFi Events
+Modifired to use with Ethernet connect/disconnect algoritm
+Added Opentherm standby mode when connecting WiFi and/or MQTT
+Fix WiFi connection bugs and other non-critical errors
+
+ESP-2.1.2(20230108):
+Added Boiler Lock-out Reset
+Added Thermostat turn off when CH mode turn of
+
+ESP-2.1.1(20221205):
+Use ESP32 core ver.2.0.5
+
 ESP-2.1.0(20221125):
 Added Ethernet support for WT32-ETH01 board
 Main Code fully refactored
