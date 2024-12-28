@@ -5,7 +5,7 @@
 Для определения кнопки используются следующие команды:
 [button_name ИМЯ_КНОПКИ] - произвольное имя кнопки
 [button_pin XX] - пин контроллера
-[button_type XXXXXXX] - тип используемой кнопки TOUCH/GROUND/PULLUP, по умолчанию используется значение TOUCH
+[button_type XXXXXXX] - тип используемой кнопки TOUCH/GROUND/POWER/PULLUP, по умолчанию используется значение TOUCH
 [button_mode XXXXXXX] - режим работы кнопки BUTTON/SWITCH, по умолчанию используется значение BUTTON
 Для назначения функций кнопки используются следующие команды:
 [display_scroll_left ИМЯ_КНОПКИ]
